@@ -110,15 +110,6 @@ export default {
       }
     };
 
-    // 密码的验证
-    const checkPassword = (rule, value, callback) =>{
-      const reg = /abcd/;
-      if(reg.test(value)){
-        callback(); // 验证通过
-      } else {
-        callback(new Error('密码不符合XXX要求'));
-      }
-    }
 
     return {
       svg : '',
@@ -157,10 +148,11 @@ export default {
     this.getCaptchaFunc();
   },
   methods: {
-    getCaptchaFunc(){
-      getCaptcha().then(res=>{
-        this.svg = res;
-      })
+    async getCaptchaFunc(){
+      // getCaptcha().then(res=>{
+      //   this.svg = res;
+      // })
+      this.svg = await getCaptcha();
     },
     showPwd() {
       if (this.passwordType === "password") {
