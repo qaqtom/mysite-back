@@ -1,46 +1,63 @@
-import { login, logout, getInfo } from '@/api/user'
+import { loginApi, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+// import { reject, resolve } from 'core-js/fn/promise'
 
 const getDefaultState = () => {
   return {
-    token: getToken(),
-    name: '',
-    avatar: ''
+    user:null,
   }
 }
 
 const state = getDefaultState()
 
 const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
-  },
-  SET_TOKEN: (state, token) => {
-    state.token = token
-  },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  // RESET_STATE: (state) => {
+  //   Object.assign(state, getDefaultState())
+  // },
+  // SET_TOKEN: (state, token) => {
+  //   state.token = token
+  // },
+  // SET_NAME: (state, name) => {
+  //   state.name = name
+  // },
+  // SET_AVATAR: (state, avatar) => {
+  //   state.avatar = avatar
+  // }
+  SET_USER: (state, payload) => {
+    state.user = payload;
   }
 }
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
+   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+      loginApi(userInfo).then(resp => {
+        const { data } = resp;
+        if (data) {
+          commit('SET_USER', data);
+          resolve();
+        } else {
+          reject(resp);
+        }
       }).catch(error => {
         reject(error)
       })
     })
+
+
+    // const { username, password } = userInfo
+    // return new Promise((resolve, reject) => {
+    //   login({ username: username.trim(), password: password }).then(response => {
+    //     const { data } = response
+    //     commit('SET_TOKEN', data.token)
+    //     setToken(data.token)
+    //     resolve()
+    //   }).catch(error => {
+    //     reject(error)
+    //   })
+    // })
   },
 
   // get user info

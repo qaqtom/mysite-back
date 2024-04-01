@@ -167,7 +167,27 @@ export default {
     // 登录相关的方法
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
-        console.log(valid);
+        if(valid){
+          this.loading = true;
+          if(this.loginForm.checked){
+            this.loginForm.remember = 7;
+          }
+
+          this.$store.dispatch("user/login",this.loginForm)
+            .then(()=>{
+              this.$router.push({ path: this.redirect || "/" });
+              this.loading = false;
+            })
+            .catch(resp =>{
+                if(typeof resp === 'string'){
+                  // 说明是验证码错误
+                  this.$message.error('验证码错误');
+                }else{
+                  // 说明是密码错误
+                  this.$message.error('账号密码错误');
+                }
+            })
+        }
         // if (valid) {
         //   this.loading = true;
         //   this.$store
