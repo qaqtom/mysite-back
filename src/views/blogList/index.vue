@@ -152,7 +152,7 @@ export default {
     },
 
     // 跳转到具体的文章
-    goToTitleHandle() {
+    goToTitleHandle(blogInfo) {
       window.open(`${frontEnd_URL}/article/${blogInfo.id}`);
     },
     // 编辑文章
