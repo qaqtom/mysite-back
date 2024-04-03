@@ -50,7 +50,7 @@
 
       <!-- 第五列 所属分类-->
       <el-table-column prop="title" label="所属分类" width="150" align="center">
-        <template slot-scope="scope">{{ scope.row.category.name }}</template>
+        <template slot-scope="scope">{{ scope.row.category === null ? "未分类" : scope.row.category.name }}</template>
       </el-table-column>
 
       <!-- 第六列 创建日期-->
