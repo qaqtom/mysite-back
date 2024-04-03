@@ -42,8 +42,8 @@
       <el-button
         type="primary"
         style="margin-top: 15px"
-        @click="addArticleHandle"
-        >发布文章</el-button
+        @click="editArticleHandle"
+        >确认修改</el-button
       >
     </div>
   </div>
@@ -54,7 +54,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/vue-editor";
 import Upload from "@/components/Upload.vue";
 import { getBlogType } from "@/api/blogType.js";
-import { addBlog } from '@/api/blog.js'
+import { editBlog, findOneBlog } from '@/api/blog.js'
 export default {
   components: {
     Editor,
@@ -62,6 +62,7 @@ export default {
   },
   data() {
     return {
+        id:null,// 存储传递过来的 id
       form: {
         title: "", //文章标题
         editorText: "", //用户编辑的内容
@@ -78,9 +79,16 @@ export default {
     getBlogType().then(({ data }) => {
       this.blogType = data;
     });
+    // 一进来的时候，就拿到传递过来的 id，根据这个 id 获取到这篇文章的内容，回填到表单
+    this.id = this.$route.params.id;
+    findOneBlog(this.id).then(({data})=>{
+        this.form = data;
+        this.form.select = data.category === null ? '' : data.category.id; 
+        this.$refs.toastuiEditor.invoke('setHTML', data.htmlContent);
+    })
   },
   methods: {
-    addArticleHandle() {
+    editArticleHandle() {
       // 添加文章的业务逻辑 1. 获取表单内容   2. 发送请求
       let html = this.$refs.toastuiEditor.invoke("getHTML");
       let markdown = this.$refs.toastuiEditor.invoke("getMarkdown");
@@ -98,13 +106,17 @@ export default {
       };
 
       if (obj.title && obj.description && obj.htmlContent && obj.categoryId) {
-        addBlog(obj).then(() => {
+        editBlog(obj).then(() => {
           this.$router.push("/blogList"); // 跳转到文章列表
+          this.$message.success('文章修改成功');
         });
       } else {
         this.$message.error("请填写所有内容");
       }
     },
+    changeHandle(){
+        this.$forceUpdate();
+    }
   },
 };
 </script>

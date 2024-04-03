@@ -73,7 +73,7 @@
               icon="el-icon-edit"
               circle
               size="mini"
-              @click="editBannerHandle(scope.row)"
+              @click="editBlogHandle(scope.row)"
             ></el-button>
           </el-tooltip>
 
@@ -155,7 +155,10 @@ export default {
     goToTitleHandle() {
       window.open(`${frontEnd_URL}/article/${blogInfo.id}`);
     },
-    editBannerHandle() {},
+    // 编辑文章
+    editBlogHandle(blogInfo){
+      this.$router.push(`/editBlog/${blogInfo.id}`)
+    },
     //删除文章
     deleteBlog(blogInfo) {
       this.$confirm(
