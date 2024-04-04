@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 数据表格 -->
-    <el-table :data="data" style="width: 100%" border>
+    <el-table :data="data" style="width: 100%" border v-loading="listLoading">
       <!-- 第一列 序号 -->
       <el-table-column align="center">
         <template slot-scope="scope">{{
@@ -104,6 +104,7 @@
       :page-sizes="[5, 10, 20]"
       layout="prev, pager, next, total, ->, sizes, jumper"
       :total="count"
+      :current-page.sync="pageCurrentPage"
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
       @prev-click="prevClickHandle"
@@ -126,6 +127,8 @@ export default {
       currentPage: 1, // 当前页码，默认进来是第一页
       totalPage: 0, // 总页数
       count: 0, // 数据总条数
+      pageCurrentPage:1,//当前页码
+      listLoading:false,
     };
   },
   created() {
@@ -133,6 +136,7 @@ export default {
   },
   methods: {
     fetchData() {
+      this.listLoading = true;
       findBlog(this.currentPage, this.eachPage).then(({ data }) => {
         this.data = data.rows;
         for (var i of this.data) {
@@ -148,11 +152,12 @@ export default {
           this.currentPage = this.totalPage;
           this.fetchData();
         }
+        this.listLoading = false;
       });
     },
 
     // 跳转到具体的文章
-    goToTitleHandle(blogInfo) {
+    goToTitleHandle(blogInfo) { 8 
       window.open(`${frontEnd_URL}/article/${blogInfo.id}`);
     },
     // 编辑文章
@@ -191,6 +196,7 @@ export default {
     sizeChangeHandle(pagerNum){
         this.eachPage = parseInt(pagerNum);
         this.currentPage = 1;
+        this.pageCurrentPage = 1;
         this.fetchData();
     },
     currentChangeHandle(pageNum) {

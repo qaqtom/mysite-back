@@ -134,7 +134,6 @@ export default {
       this.listLoading = true;
       this.data = (await getBlogType()).data;
       this.listLoading = false;
-      console.log(this.data);
     },
     //添加文章分分类
     async addBlogTypeHandle() {

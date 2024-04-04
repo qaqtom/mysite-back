@@ -183,7 +183,6 @@ export default {
       this.listLoading = true;
       getProject().then(({ data }) => {
         this.data = data;
-        console.log(this.data);
         for (let i of this.data) {
           i.thumb2 = server_URL + i.thumb;
           this.srcList.push(i.thumb2);
