@@ -22,7 +22,7 @@
           <el-avatar
             shape="square"
             size="small"
-            :src="scope.row.avatar2"
+            :src="scope.row.avatar"
           ></el-avatar>
         </template>
       </el-table-column>
@@ -119,7 +119,7 @@ export default {
         this.data = data.rows;
         for (let i of this.data) {
           i.createdDate = formatDate(i.createdDate);
-          i.avatar2 = server_URL + i.avatar;
+          // i.avatar2 = server_URL + i.avatar;
         }
         this.count = data.total; // 计算总条数
         this.totalPage = Math.ceil(this.count / this.eachPage);
@@ -128,7 +128,6 @@ export default {
           this.fetchData();
         }
         this.listLoading = false;
-        console.log(this.data);
       });
     },
     deleteComment({ id }) {

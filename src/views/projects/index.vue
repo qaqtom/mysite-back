@@ -34,7 +34,7 @@
         <template slot-scope="scope">
           <el-image
             style="width: 120px"
-            :src="scope.row.thumb2"
+            :src="scope.row.thumb"
             :preview-src-list="srcList"
           >
           </el-image>
@@ -184,8 +184,8 @@ export default {
       getProject().then(({ data }) => {
         this.data = data;
         for (let i of this.data) {
-          i.thumb2 = server_URL + i.thumb;
-          this.srcList.push(i.thumb2);
+          // i.thumb2 = server_URL + i.thumb;
+          this.srcList.push(i.thumb);
         }
         this.listLoading = false;
       });

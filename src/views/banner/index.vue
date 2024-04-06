@@ -22,14 +22,14 @@
 
       <el-table-column label="中图预览" align="center">
         <template slot-scope="scope">
-          <el-image style="width: 100px" :src="scope.row.midImg2" fit="fill">
+          <el-image style="width: 100px" :src="scope.row.midImg" fit="fill">
           </el-image>
         </template>
       </el-table-column>
 
       <el-table-column label="大图预览" align="center">
         <template slot-scope="scope">
-          <el-image style="width: 100px" :src="scope.row.bigImg2" fit="fill">
+          <el-image style="width: 100px" :src="scope.row.bigImg" fit="fill">
           </el-image>
         </template>
       </el-table-column>
@@ -120,10 +120,10 @@ export default {
     fetchData() {
       getBanner().then((res) => {
         this.data = res.data;
-        for (var item of this.data) {
-          item.midImg2 = server_URL + item.midImg;
-          item.bigImg2 = server_URL + item.bigImg;
-        }
+        // for (var item of this.data) {
+        //   item.midImg2 = server_URL + item.midImg;
+        //   item.bigImg2 = server_URL + item.bigImg;
+        // }
       });
     },
     editBannerHandle(bannerInfo) {
